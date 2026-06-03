@@ -7,6 +7,8 @@
   <!-- Google Font (optional) -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400&display=swap" rel="stylesheet">
 
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <style>
     body {
       margin: 0;
@@ -15,6 +17,37 @@
       background: #faf7f2;
       color: #333;
       text-align: center;
+    }
+
+    /* LANGUAGE BAR */
+    .lang-bar {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      padding: 0.7rem 1rem;
+      background: rgba(255,255,255,0.9);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid #e5e5e5;
+      backdrop-filter: blur(6px);
+    }
+
+    .lang-btn {
+      padding: 0.35rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid #d8c7b8;
+      background: #f3e8dd;
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .lang-btn.active {
+      background: #c7a17a;
+      color: white;
+      border-color: #c7a17a;
     }
 
     .hero {
@@ -77,6 +110,13 @@
 
 <body>
 
+  <!-- LANGUAGE BAR -->
+  <div class="lang-bar">
+    <button class="lang-btn active">FR</button>
+    <button class="lang-btn">NL</button>
+    <button class="lang-btn">EN</button>
+  </div>
+
   <!-- Hero Section -->
   <div class="hero">
     <h1>Gwen & Martin</h1>
@@ -100,8 +140,8 @@
     <h2>Location</h2>
     <p>
       Ceremony & Reception  
-      <br><strong>[Buurthuis Widooie]</strong>  
-      <br>[Knapenstraat 18, 3700 Widooie]
+      <br><strong>Buurthuis Widooie</strong>  
+      <br>Knapenstraat 18, 3700 Widooie
     </p>
   </div>
 
@@ -111,4 +151,4 @@
 
 </body>
 </html>
- 
+
