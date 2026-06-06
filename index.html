@@ -9,12 +9,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <style>
+    <style>
     body {
       margin: 0;
       padding: 0;
      font-family: 'Marcellus', serif;
-      color: #E78C7D;
+      color: #FB747A;
       text-align: center;
     }
 
@@ -48,6 +48,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 50px;
     }
     .hero h1 {
     font-family: 'Bukhari Script',sans-serif ;
@@ -55,44 +56,36 @@
     text-shadow: 2px 5px 0px #F47445, 4px 10px rgba(244, 116, 69, 0.5);
     font-size: 3.5rem;
     }
-
+    /* Information section */
     .section {
-      padding: 50px 20px;
-      max-width: 700px;
-      margin: auto;
+
+    margin: auto;
     }
     h2 {
       font-size: 2rem;
-      margin-bottom: 10px;
+      
     }
     .date {
       font-size: 1.2rem;
-      color: #7a6f63;
       margin-bottom: 30px;
     }
     .button {
       display: inline-block;
-      padding: 14px 28px;
-      background: #c7a17a;
-      color: white;
+      border: 1px solid #FB747A;
+      background: #FEE7EA;
+      padding: 14px;
+      color:  #FB747A;
       text-decoration: none;
       border-radius: 6px;
       font-size: 1.1rem;
       margin-top: 20px;
     }
-
     .button:hover {
-      background: #b38f6c;
-    }
-   footer {
-      margin-top: 40px;
-      padding: 20px;
-      font-size: 0.9rem;
-      color: #7a7a7a;
+    background: #FB747A;
+    color: white;
     }
   </style>
 </head>
-
 <body>
   <!-- LANGUAGE BAR -->
   <div class="lang-bar">
@@ -106,89 +99,124 @@
     <h1>Gwen & Martin</h1>
   </div>
 
-    <!-- Intro -->
+  <!-- Intro -->
   <div class="section">
-    <h2 data-i18n="title">We’re Getting Married</h2>
+    <h2 data-i18n="title"></h2>
 
-    <p class="date" data-i18n="date">
-      Saturday • 5 September 2026 • Tongeren
+    <p class="date">
+      <span data-i18n="date"></span>
     </p>
 
-    <p data-i18n="intro">
-      We would love to celebrate this special day with you.
-      Please let us know if you will be joining us.
-    </p>
+    <p data-i18n="intro"></p>
 
-    <a class="button" href="#" data-i18n="rsvp">RSVP Coming Soon</a>
+    <a class="button" id="rsvp-btn" data-i18n="rsvp"></a>
   </div>
 
   <!-- Location -->
   <div class="section">
-    <h2 data-i18n="location-title">Location</h2>
+    <h2 data-i18n="location.title"></h2>
 
-    <p data-i18n="location-text">
-      Ceremony & Reception  
-      <br><strong>Buurthuis Widooie</strong>  
-      <br>Knapenstraat 18, 3700 Widooie
+    <p>
+      <span data-i18n="location.ceremony"></span><br>
+      <strong data-i18n="location.venue"></strong><br>
+      <span data-i18n="location.address"></span>
     </p>
   </div>
-
-  <footer data-i18n="footer">
-    With love, Gwen & Martin
-  </footer>
-
 
   <!-- LANGUAGE SWITCHING SCRIPT -->
   <script>
     const translations = {
+      en: {
+        title: "We’re Getting Married",
+        date: "Saturday • 5 September 2026 • Tongeren",
+        intro: "We would love to celebrate this special day with you. Please let us know if you will be joining us.",
+        rsvp: "Let us know",
+        location: {
+          title: "Location",
+          ceremony: "Ceremony & Reception",
+          venue: "Buurthuis Widooie",
+          address: "Knapenstraat 18, 3700 Widooie"
+        }
+      },
       fr: {
         title: "Nous nous marions",
-        date: "Samedi • 5 septembre 2026 • Tongeren",
+        date: "Samedi • 5 septembre 2026 • Tongres",
         intro: "Nous serions ravis de célébrer cette journée spéciale avec vous. Merci de nous dire si vous serez présents.",
-        rsvp: "RSVP bientôt disponible",
-        "location-title": "Lieu",
-        "location-text": "Cérémonie & Réception<br><strong>Buurthuis Widooie</strong><br>Knapenstraat 18, 3700 Widooie",
-        footer: "Avec amour, Gwen & Martin"
+        rsvp: "Informez nous",
+        location: {
+          title: "Lieu",
+          ceremony: "Cérémonie & Réception",
+          venue: "Buurthuis Widooie",
+          address: "Knapenstraat 18, 3700 Widooie"
+        }
       },
       nl: {
         title: "Wij gaan trouwen",
         date: "Zaterdag • 5 september 2026 • Tongeren",
         intro: "We zouden het geweldig vinden om deze speciale dag met jullie te vieren. Laat ons weten of je erbij bent.",
-        rsvp: "RSVP binnenkort beschikbaar",
-        "location-title": "Locatie",
-        "location-text": "Ceremonie & Receptie<br><strong>Buurthuis Widooie</strong><br>Knapenstraat 18, 3700 Widooie",
-        footer: "Met liefde, Gwen & Martin"
-      },
-      en: {
-        title: "We’re Getting Married",
-        date: "Saturday • 5 September 2026 • Tongeren",
-        intro: "We would love to celebrate this special day with you. Please let us know if you will be joining us.",
-        rsvp: "RSVP Coming Soon",
-        "location-title": "Location",
-        "location-text": "Ceremony & Reception<br><strong>Buurthuis Widooie</strong><br>Knapenstraat 18, 3700 Widooie",
-        footer: "With love, Gwen & Martin"
+        rsvp: "Laat ons weten",
+        location: {
+          title: "Locatie",
+          ceremony: "Ceremonie & Receptie",
+          venue: "Buurthuis Widooie",
+          address: "Knapenstraat 18, 3700 Widooie"
+        }
       }
     };
 
-    const buttons = document.querySelectorAll(".lang-btn");
-    const elements = document.querySelectorAll("[data-i18n]");
+  // Helper to read nested keys like "location.title"
+  function getNested(obj, path) {
+    return path.split('.').reduce((o, k) => o[k], obj);
+  }
 
-    buttons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        const lang = btn.dataset.lang;
+  const buttons = document.querySelectorAll(".lang-btn");
+  const elements = document.querySelectorAll("[data-i18n]");
+  const rsvpBtn = document.getElementById("rsvp-btn");
 
-        // highlight active button
-        buttons.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
+  // Get language from URL (?lang=xx) or default to EN
+  const params = new URLSearchParams(window.location.search);
+  let currentLang = params.get("lang") || "en";
 
-        // update text
-        elements.forEach(el => {
-          const key = el.dataset.i18n;
-          el.innerHTML = translations[lang][key];
-        });
-      });
+  function setActiveButton(lang) {
+    buttons.forEach(b => {
+      b.classList.toggle("active", b.dataset.lang === lang);
     });
-  </script>
+  }
+
+  function updateLanguage(lang) {
+    currentLang = lang;
+
+    // Update all text
+    elements.forEach(el => {
+      const key = el.dataset.i18n;
+      el.innerHTML = getNested(translations[lang], key);
+    });
+
+    // Update RSVP button link
+    if (rsvpBtn) {
+      rsvpBtn.onclick = () => {
+        window.location.href = `poll.html?lang=${currentLang}`;
+      };
+    }
+
+    // Update URL without reloading
+    const url = new URL(window.location.href);
+    url.searchParams.set("lang", lang);
+    window.history.replaceState({}, "", url);
+
+    setActiveButton(lang);
+  }
+
+  // Language button clicks
+  buttons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      updateLanguage(btn.dataset.lang);
+    });
+  });
+
+  // Initial load
+  updateLanguage(currentLang);
+</script>
 </body>
 </html>
 
