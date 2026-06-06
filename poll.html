@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Our Wedding – Poll</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.cdnfonts.com/css/bukhari-script" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Marcellus', serif;
+      color: #FB747A;
+      text-align: center;
+      background: #FFF7F5;
+    }
+
+    /* LANGUAGE BAR */
+    .lang-bar {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem 1rem;
+      border-bottom: 1px solid #F47445;
+      background: #FFFFFF;
+    }
+    .lang-btn {
+      padding: 0.25rem 1rem;
+      border-radius: 20px;
+      border: 1px solid #FB747A;
+      background: #FEE7EA;
+      cursor: pointer;
+      color: #FB747A;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .lang-btn.active {
+      background: #FB747A;
+      color: white;
+      border-color: #FB747A;
+    }
+
+    .section {
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 0 1.5rem 2.5rem;
+    }
+
+    h1 {
+      font-family: 'Bukhari Script', sans-serif;
+      color: white;
+      text-shadow:
+        -2px -2px 0 #FB747A,
+         2px -2px 0 #FB747A,
+        -2px  2px 0 #FB747A,
+         2px  2px 0 #FB747A,
+         2px 5px 0px #F47445,
+         4px 10px rgba(244, 116, 69, 0.5);
+      font-size: 3.5rem;
+    }
+
+    form {
+      text-align: left;
+      margin-top: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-size: 0.95rem;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 0.6rem 0.7rem;
+      border-radius: 6px;
+      border: 1px solid #FB747A;
+      font-family: 'Marcellus', serif;
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .button {
+      display: inline-block;
+      border: 1px solid #FB747A;
+      background: #FEE7EA;
+      padding: 12px 20px;
+      color: #FB747A;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .button:hover {
+      background: #FB747A;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- LANGUAGE BAR -->
+  <div class="lang-bar">
+    <button class="lang-btn" data-lang="fr">FR</button>
+    <button class="lang-btn" data-lang="en">EN</button>
+    <button class="lang-btn" data-lang="nl">NL</button>
+  </div>
+
+  <div class="section">
+    <h1>Gwen & Martin</h1>
+
+    <h2 data-i18n="poll.title"></h2>
+    <p data-i18n="poll.intro"></p>
+
+    <!-- VISIBLE FORM -->
+    <form id="poll-form">
+      <label data-i18n="poll.attending.label"></label>
+      <select name="attending" id="attending">
+        <option value="yes" data-i18n="poll.attending.yes"></option>
+        <option value="no" data-i18n="poll.attending.no"></option>
+      </select>
+
+      <label data-i18n="poll.names.label"></label>
+      <input type="text" name="names" id="names"/>
+
+      <label data-i18n="poll.guests.label"></label>
+      <input type="number" name="guests" id="guests" min="1" max="10"/>
+
+      <label data-i18n="poll.allergies.label"></label>
+      <textarea name="allergies" id="allergies"></textarea>
+
+      <label data-i18n="poll.message.label"></label>
+      <textarea name="message" id="message"></textarea>
+
+      <button type="submit" class="button" data-i18n="poll.submit"></button>
+    </form>
+  </div>
+
+  <!-- HIDDEN GOOGLE FORM -->
+  <form id="rsvpForm"
+        action="https://docs.google.com/forms/d/e/1FAIpQLSe1WF-ZUAfunHP3IJaUVuKduT2EDrk4WKaq_y3cOLYJCDRI1w/formResponse"
+        method="POST"
+        target="hidden_iframe">
+
+    <input type="hidden" name="entry.37844826" id="g_attending">
+    <input type="hidden" name="entry.2093007889" id="g_names">
+    <input type="hidden" name="entry.645515434" id="g_guests">
+    <input type="hidden" name="entry.711463186" id="g_allergies">
+    <input type="hidden" name="entry.249259064" id="g_message">
+
+    <button type="submit" id="submitBtn" style="display:none;"></button>
+  </form>
+
+  <iframe name="hidden_iframe" style="display:none;"></iframe>
+
+  <script>
+    const translations = {
+      en: {
+        poll: {
+          title: "Details of your presence",
+          intro: "Thank you for letting us know. Please fill in a few details below.",
+          attending: { label: "Will you be joining us?", yes: "Yes", no: "No" },
+          names: { label: "Your name(s)" },
+          guests: { label: "How many people in total (including you)?" },
+          allergies: { label: "Any allergies or dietary requirements?" },
+          message: { label: "Anything else you'd like us to know?" },
+          submit: "Send response"
+        }
+      },
+      fr: {
+        poll: {
+          title: "Détails de votre présence",
+          intro: "Merci de nous répondre. Merci de remplir quelques informations ci-dessous.",
+          attending: { label: "Serez-vous présents ?", yes: "Oui", no: "Non" },
+          names: { label: "Votre nom / noms" },
+          guests: { label: "Combien de personnes au total (vous compris)?" },
+          allergies: { label: "Allergies ou régimes particuliers?" },
+          message: { label: "Autre chose que vous souhaitez nous dire?" },
+          submit: "Envoyer la réponse"
+        }
+      },
+      nl: {
+        poll: {
+          title: "RSVP details",
+          intro: "Bedankt om ons iets te laten weten. Vul hieronder enkele gegevens in.",
+          attending: { label: "Komen jullie naar het feest?", yes: "Ja", no: "Nee" },
+          names: { label: "Naam/namen" },
+          guests: { label: "Met hoeveel personen in totaal (inclusief jezelf)?" },
+          allergies: { label: "Allergieën of speciale dieetwensen?" },
+          message: { label: "Nog iets dat je met ons wil delen?" },
+          submit: "Antwoord versturen"
+        }
+      }
+    };
+
+    function getNested(obj, path) {
+      return path.split('.').reduce((o, k) => o && o[k], obj);
+    }
+
+    const buttons = document.querySelectorAll(".lang-btn");
+    const elements = document.querySelectorAll("[data-i18n]");
+
+    const params = new URLSearchParams(window.location.search);
+    let currentLang = params.get("lang") || "en";
+
+    function setActiveButton(lang) {
+      buttons.forEach(b => b.classList.toggle("active", b.dataset.lang === lang));
+    }
+
+    function updateLanguage(lang) {
+      currentLang = lang;
+
+      elements.forEach(el => {
+        const key = el.dataset.i18n;
+        const value = getNested(translations[lang], key);
+        if (value !== undefined) el.innerHTML = value;
+      });
+
+      const url = new URL(window.location.href);
+      url.searchParams.set("lang", lang);
+      window.history.replaceState({}, "", url);
+
+      setActiveButton(lang);
+    }
+
+    // FORM SUBMISSION
+    document.getElementById("poll-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      document.getElementById("g_attending").value = document.getElementById("attending").value;
+      document.getElementById("g_names").value = document.getElementById("names").value;
+      document.getElementById("g_guests").value = document.getElementById("guests").value;
+      document.getElementById("g_allergies").value = document.getElementById("allergies").value;
+      document.getElementById("g_message").value = document.getElementById("message").value;
+
+      document.getElementById("submitBtn").click();
+
+      setTimeout(() => {
+        window.location.href = `thankyou.html?lang=${currentLang}`;
+      }, 300);
+    });
+
+    buttons.forEach(btn => btn.addEventListener("click", () => updateLanguage(btn.dataset.lang)));
+
+    updateLanguage(currentLang);
+  </script>
+
+</body>
+</html>
+

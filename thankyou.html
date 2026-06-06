@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Our Wedding – Thank You</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.cdnfonts.com/css/bukhari-script" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Marcellus', serif;
+      color: #FB747A;
+      text-align: center;
+      background: #FFF7F5;
+    }
+
+    /* LANGUAGE BAR */
+    .lang-bar {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem 1rem;
+      border-bottom: 1px solid #F47445;
+      background: #FFFFFF;
+    }
+    .lang-btn {
+      padding: 0.25rem 1rem;
+      border-radius: 20px;
+      border: 1px solid #FB747A;
+      background: #FEE7EA;
+      cursor: pointer;
+      color: #FB747A;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .lang-btn.active {
+      background: #FB747A;
+      color: white;
+      border-color: #FB747A;
+    }
+
+    /* CONTENT */
+    .section {
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 0 1.5rem 2.5rem;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .button {
+      display: inline-block;
+      border: 1px solid #FB747A;
+      background: #FEE7EA;
+      padding: 12px 20px;
+      color: #FB747A;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+
+    .button:hover {
+      background: #FB747A;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- LANGUAGE BAR -->
+  <div class="lang-bar">
+    <button class="lang-btn" data-lang="fr">FR</button>
+    <button class="lang-btn" data-lang="en">EN</button>
+    <button class="lang-btn" data-lang="nl">NL</button>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="section">
+    <h1 id="title">Thank You</h1>
+    <p id="message">Your response has been recorded. We can’t wait to celebrate with you.</p>
+
+    <a class="button" id="back_home">Back to Home</a>
+  </div>
+
+  <script>
+    const translations = {
+      en: {
+        title: "Thank You",
+        message: "Your response has been recorded. We can’t wait to celebrate with you.",
+        back_home: "Back to Home"
+      },
+      fr: {
+        title: "Merci",
+        message: "Votre réponse a bien été enregistrée. Nous avons hâte de célébrer ce jour spécial avec vous.",
+        back_home: "Retour à l’accueil"
+      },
+      nl: {
+        title: "Bedankt",
+        message: "Je antwoord is goed ontvangen. We kijken ernaar uit om deze speciale dag met jullie te vieren.",
+        back_home: "Terug naar startpagina"
+      }
+    };
+
+   function applyLang(lang) {
+    document.getElementById("title").textContent = translations[lang].title;
+    document.getElementById("message").textContent = translations[lang].message;
+    document.getElementById("back_home").textContent = translations[lang].back_home;
+
+    // Highlight active language button
+    document.querySelectorAll(".lang-btn").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.lang === lang);
+    });
+
+    // Update Back to Home link
+    const backHomeBtn = document.getElementById("back_home");
+    backHomeBtn.href = `index.html?lang=${lang}`;
+  }
+
+  // Read language from URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const lang = urlParams.get("lang") || "en";
+
+  // Apply initial language
+  applyLang(lang);
+
+  // Handle language switching
+  document.querySelectorAll(".lang-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const newLang = btn.dataset.lang;
+
+      applyLang(newLang);
+
+      // Update URL without reloading
+      const newUrl = window.location.pathname + "?lang=" + newLang;
+      window.history.replaceState({}, "", newUrl);
+    });
+  });  </script>
+
+</body>
+</html>
+
