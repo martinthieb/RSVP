@@ -131,18 +131,20 @@
     <!-- VISIBLE FORM -->
     <form id="poll-form">
       <label data-i18n="poll.attending.label"></label>
-      <select name="attending" id="attending">
-        <option value="yes" data-i18n="poll.attending.yes"></option>
-        <option value="no" data-i18n="poll.attending.no"></option>
-      </select>
-
+    <label><input type="checkbox" id="drink"><span data-i18n="poll.attending.drink"></span></label>
+    <label><input type="checkbox" id="party"><span data-i18n="poll.attending.party"></span></label>
+    <label><input type="checkbox" id="none"><span data-i18n="poll.attending.none"></span></label>
+  
       <label data-i18n="poll.names.label"></label>
       <input type="text" name="names" id="names"/>
 
       <label data-i18n="poll.guests.label"></label>
       <input type="number" name="guests" id="guests" min="1" max="10"/>
-
-      <label data-i18n="poll.allergies.label"></label>
+      
+      <label data-i18n="poll.children.label"></label>
+      <input type="number" name="children" id="children" min="0" max="10"/>
+      
+        <label data-i18n="poll.allergies.label"></label>
       <textarea name="allergies" id="allergies"></textarea>
 
       <label data-i18n="poll.message.label"></label>
@@ -161,6 +163,7 @@
     <input type="hidden" name="entry.37844826" id="g_attending">
     <input type="hidden" name="entry.2093007889" id="g_names">
     <input type="hidden" name="entry.645515434" id="g_guests">
+    <input type="hidden" name="entry.429903674" id="g_children">
     <input type="hidden" name="entry.711463186" id="g_allergies">
     <input type="hidden" name="entry.249259064" id="g_message">
 
@@ -175,9 +178,13 @@
         poll: {
           title: "Details of your presence",
           intro: "Thank you for letting us know. Please fill in a few details below.",
-          attending: { label: "Will you be joining us?", yes: "Yes", no: "No" },
+          attending: { label: "When will you be joining us?",
+            drink: "Bubbles & bites (walking dinner) ",
+            party: "Time to party" ,
+            none: "Unfortunatly, we cannot attend."},
           names: { label: "Your name(s)" },
-          guests: { label: "How many people in total (including you)?" },
+          guests: { label: "How many adults in total (including you)?" },
+          children: {label: "How many childeren in total (excluding you)?"},
           allergies: { label: "Any allergies or dietary requirements?" },
           message: { label: "Anything else you'd like us to know?" },
           submit: "Send response"
@@ -187,9 +194,13 @@
         poll: {
           title: "Détails de votre présence",
           intro: "Merci de nous répondre. Merci de remplir quelques informations ci-dessous.",
-          attending: { label: "Serez-vous présents ?", yes: "Oui", no: "Non" },
+          attending: { label: "Serez-vous présents ?",
+            drink: "Bulles & bouchees (walking dinner)",
+            party: "l'heure de celebrer",
+            none: "Malheureusement nous ne pouvons pas participer."},
           names: { label: "Votre nom / noms" },
-          guests: { label: "Combien de personnes au total (vous compris)?" },
+          guests: { label: "Combien d'adultes au total (vous compris)?" },
+          children: {label : "Combien d'enfants au total (vous exclus)?"},
           allergies: { label: "Allergies ou régimes particuliers?" },
           message: { label: "Autre chose que vous souhaitez nous dire?" },
           submit: "Envoyer la réponse"
@@ -197,11 +208,15 @@
       },
       nl: {
         poll: {
-          title: "RSVP details",
+          title: "Details van uw aanwezigheid",
           intro: "Bedankt om ons iets te laten weten. Vul hieronder enkele gegevens in.",
-          attending: { label: "Komen jullie naar het feest?", yes: "Ja", no: "Nee" },
+          attending: { label: "Komen jullie naar het feest?",
+            drink: "Bubbles & bites (walking dinner)",
+            party: "Tijd om te vieren",
+            none: "We kunnen spijtig genoeg niet deelnemen."},
           names: { label: "Naam/namen" },
-          guests: { label: "Met hoeveel personen in totaal (inclusief jezelf)?" },
+          guests: { label: "Met hoeveel volwassenen in totaal (inclusief jezelf)?" },
+          children: {label: "Met hoeveel kinderen in totaal (exclusief jezelf)?"},
           allergies: { label: "Allergieën of speciale dieetwensen?" },
           message: { label: "Nog iets dat je met ons wil delen?" },
           submit: "Antwoord versturen"
@@ -215,8 +230,13 @@
 
     const buttons = document.querySelectorAll(".lang-btn");
     const elements = document.querySelectorAll("[data-i18n]");
-
+    
     const params = new URLSearchParams(window.location.search);
+    const drink = document.getElementById("drink");
+    const party = document.getElementById("party");
+    const none = document.getElementById("none");
+
+
     let currentLang = params.get("lang") || "en";
 
     function setActiveButton(lang) {
@@ -238,14 +258,36 @@
 
       setActiveButton(lang);
     }
-
+    // multiple choice logic 
+    none.addEventListener("change", function () {
+      if (this.checked) {
+        drink.checked = false;
+        party.checked = false;
+        }
+    });
+    drink.addEventListener("change", function () {
+      if (this.checked) none.checked = false;
+    });
+    party.addEventListener("change", function () {
+      if (this.checked) none.checked = false;
+    });
     // FORM SUBMISSION
     document.getElementById("poll-form").addEventListener("submit", function(e) {
       e.preventDefault();
-
-      document.getElementById("g_attending").value = document.getElementById("attending").value;
+      const selected = [];
+      if (document.getElementById("drink").checked) {
+       selected.push("Drink");
+      }
+      if (document.getElementById("party").checked) {
+        selected.push("Party");
+      }
+      if (document.getElementById("none").checked) {
+        selected.push("None");
+      }
+      document.getElementById("g_attending").value = selected.join(";");
       document.getElementById("g_names").value = document.getElementById("names").value;
       document.getElementById("g_guests").value = document.getElementById("guests").value;
+      document.getElementById("g_children").value = document.getElementById("children").value;
       document.getElementById("g_allergies").value = document.getElementById("allergies").value;
       document.getElementById("g_message").value = document.getElementById("message").value;
 
