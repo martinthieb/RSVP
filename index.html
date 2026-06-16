@@ -5,12 +5,12 @@
   <title>Our Wedding – RSVP</title>
 
   <!-- Font -->
-  <link href="https://fonts.cdnfonts.com/css/bukhari-script" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <style>
     body {
+     background:#F9F0E7; 
       margin: 0;
       padding: 0;
      font-family: 'Marcellus', serif;
@@ -23,6 +23,7 @@
       display: flex;
       justify-content: center;
       gap: 1rem;
+      background: #FBF4EC;
       padding: 1rem 1rem;
       border-bottom: 1px solid #F47445;
     }
@@ -43,15 +44,16 @@
     }
     /* Gwen & Martin section */ 
     .hero {
-    background : linear-gradient(to bottom,#AA69A1, #FB747A);
-    height: 60vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 50px;
+      background-image: url('icons/picture.png'), linear-gradient(to bottom,#FBF4EC, #F9F0E7);
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: contain;
+      height: 60vh;
+      margin-bottom: 50px;
     }
-    .hero h1 {
-    font-family: 'Bukhari Script',sans-serif ;
+
+    .hero h1 
+    {
     color : #F5F2E3;
     text-shadow: 2px 5px 0px #F47445, 4px 10px rgba(244, 116, 69, 0.5);
     font-size: 3.5rem;
@@ -95,9 +97,7 @@
   </div>
 
   <!-- Hero Section -->
-  <div class="hero">
-    <h1>Gwen & Martin</h1>
-  </div>
+  <div class="hero"></div>
 
   <!-- Intro -->
   <div class="section">
