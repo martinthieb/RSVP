@@ -43,14 +43,13 @@
     }
     /* Gwen & Martin section */ 
     .hero {
-      background-image: url('icons/picture.png'), linear-gradient(to bottom,#FBF4EC, #F9F0E7);
+      aspect-ratio: 2.5; /* matches 1536x1024 */
+      background-image: url('icons/hero_wide.png');
       background-repeat: no-repeat;
       background-position: center center;
-      background-size: contain;
-      height: 60vh;
+      background-size: auto 100%;
       margin-bottom: 50px;
     }
-
     .hero h1 
     {
     color : #F5F2E3;
@@ -79,6 +78,7 @@
       border-radius: 6px;
       font-size: 1.1rem;
       margin-top: 20px;
+      margin-bottom: 50px;
     }
     .button:hover {
     background: #AEAC8D;
