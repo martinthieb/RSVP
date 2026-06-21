@@ -43,13 +43,18 @@
     }
     /* Gwen & Martin section */ 
     .hero {
-      aspect-ratio: 2.5; /* matches 1536x1024 */
+      aspect-ratio: 2.5;
       background-image: url('icons/hero.png');
       background-repeat: no-repeat;
       background-position: center center;
       background-size: auto 100%;
       margin-bottom: 50px;
     }
+    @media (max-width: 768px) {
+    .hero {
+      aspect-ratio: 1.5;
+    }
+}
     .hero h1 
     {
     color : #F5F2E3;
