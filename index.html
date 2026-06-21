@@ -50,11 +50,7 @@
       background-size: auto 100%;
       margin-bottom: 50px;
     }
-    @media (max-width: 768px) {
-    .hero {
-      aspect-ratio: 1.5;
-    }
-}
+    
     .hero h1 
     {
     color : #F5F2E3;
@@ -63,8 +59,15 @@
     }
     /* Information section */
     .section {
-
     margin: auto;
+    }
+    h1 {
+      aspect-ratio: 4;
+      background-image: url('icons/planning.png');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: auto 100%;
+    
     }
     h2 {
       font-size: 2rem;
@@ -88,6 +91,15 @@
     .button:hover {
     background: #AEAC8D;
     color: #F9F0E7;
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        aspect-ratio: 1.5;
+      }
+      .section h1{
+        aspect-ratio: 1.5;
+      }
     }
   </style>
 </head>
@@ -117,13 +129,8 @@
 
   <!-- Location -->
   <div class="section">
-    <h2 data-i18n="location.title"></h2>
-
-    <p>
-      <span data-i18n="location.ceremony"></span><br>
-      <strong data-i18n="location.venue"></strong><br>
-      <span data-i18n="location.address"></span>
-    </p>
+    <h1 id="planning"> </h1>
+    <p data-i18n="bot"></p>
   </div>
 
   <!-- LANGUAGE SWITCHING SCRIPT -->
@@ -132,38 +139,23 @@
       en: {
         title: "We’re getting married!",
         date: "Saturday • 5 September 2026 • Tongeren",
-        intro: "We would love to celebrate this special day with you. Please let us know if you will be joining us.",
+        intro: "We would love to celebrate this special day with you. Please let us know before 17 august if you will be joining us.",
         rsvp: "Let us know",
-        location: {
-          title: "Location",
-          ceremony: "Reception",
-          venue: "Buurthuis Widooie",
-          address: "Knapenstraat 18, 3700 Widooie"
-        }
+        bot: "Parking is done in the surrounding streets, there is no space at the venue.<br><br>Your presence is the greatest gift.<br> For those who wish, an urn will be available at the venue or a transfer to THIEBAUT-MUNSTERS, BE05 7380 4685 6375."
       },
       fr: {
         title: "Nous nous marions!",
         date: "Samedi • 5 septembre 2026 • Tongres",
-        intro: "Nous serions ravis de célébrer cette journée spéciale avec vous. Merci de nous dire si vous serez présents.",
+        intro: "Nous serions ravis de célébrer cette journée spéciale avec vous. Merci de nous dire avant le 17 août si vous serez présents.",
         rsvp: "Informez nous",
-        location: {
-          title: "Lieu",
-          ceremony: "Réception",
-          venue: "Buurthuis Widooie",
-          address: "Knapenstraat 18, 3700 Widooie"
-        }
+        bot: "Le stationnement se fait dans les rues avoisinantes, il n’y a pas de parking sur le lieu de la réception.<br><br>Votre présence est le plus beau des cadeaux.<br>Pour ceux qui le souhaitent, une urne sera disponible sur place ou vous pouvez effectuer un virement à THIEBAUT‑MUNSTERS, BE05 7380 4685 6375."
       },
       nl: {
         title: "Wij gaan trouwen!",
         date: "Zaterdag • 5 september 2026 • Tongeren",
-        intro: "We zouden het geweldig vinden om deze speciale dag met jullie te vieren. Laat ons weten of je erbij bent.",
+        intro: "We zouden het geweldig vinden om deze speciale dag met jullie te vieren. Laat ons weten voor 17 augustus of je erbij bent.",
         rsvp: "Laat ons weten",
-        location: {
-          title: "Locatie",
-          ceremony: "Receptie",
-          venue: "Buurthuis Widooie",
-          address: "Knapenstraat 18, 3700 Widooie"
-        }
+        bot:  "Parkeren kan in de omliggende straten, er is geen parking aan de locatie.<br><br>Jullie aanwezigheid is het mooiste geschenk.<br>Voor wie dat wenst, zal er een urne aanwezig zijn op de locatie of kan een overschrijving gedaan worden naar THIEBAUT‑MUNSTERS, BE05 7380 4685 6375."
       }
     };
 
@@ -175,6 +167,7 @@
   const buttons = document.querySelectorAll(".lang-btn");
   const elements = document.querySelectorAll("[data-i18n]");
   const rsvpBtn = document.getElementById("rsvp-btn");
+  const planning = document.getElementById("planning");
 
   // Get language from URL (?lang=xx) or default to EN
   const params = new URLSearchParams(window.location.search);
@@ -193,6 +186,9 @@
     elements.forEach(el => {
       const key = el.dataset.i18n;
       el.innerHTML = getNested(translations[lang], key);
+
+    // update planning image.
+    planning.style.backgroundImage = `url('icons/planning_${lang}.png')`;
     });
 
     // Update RSVP button link
