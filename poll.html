@@ -116,7 +116,7 @@
   </div>
 
   <div class="section">
-    <h1></h1>
+    <h1 id="planning"></h1>
 
     <h2 data-i18n="poll.title"></h2>
     <p data-i18n="poll.intro"></p>
@@ -188,8 +188,8 @@
           title: "Détails de votre présence",
           intro: "Merci de nous répondre. Merci de remplir quelques informations ci-dessous.",
           attending: { label: "Serez-vous présents ?",
-            drink: "Bulles & bouchees (walking dinner)",
-            party: "l'heure de celebrer",
+            drink: "Bulles & bouchées (walking dinner)",
+            party: "l'heure de célébrer",
             none: "Malheureusement nous ne pouvons pas participer."},
           names: { label: "Votre nom / noms" },
           guests: { label: "Combien d'adultes au total (vous compris)?" },
@@ -228,7 +228,7 @@
     const drink = document.getElementById("drink");
     const party = document.getElementById("party");
     const none = document.getElementById("none");
-
+    const planning = document.getElementById("planning");
 
     let currentLang = params.get("lang") || "en";
 
@@ -248,7 +248,8 @@
       const url = new URL(window.location.href);
       url.searchParams.set("lang", lang);
       window.history.replaceState({}, "", url);
-
+      // update planning image.
+      planning.style.backgroundImage = `url('icons/planning_${lang}.png')`
       setActiveButton(lang);
     }
     // multiple choice logic 
