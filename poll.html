@@ -134,13 +134,13 @@
     <label><input type="checkbox" id="none"><span data-i18n="poll.attending.none"></span></label>
   
       <label data-i18n="poll.names.label"></label>
-      <input type="text" name="names" id="names"/>
+      <input type="text" name="names" id="names" required />
 
       <label data-i18n="poll.guests.label"></label>
-      <input type="number" name="guests" id="guests" min="1" max="10"/>
+      <input type="number" name="guests" id="guests" min="1" max="10" required/>
       
       <label data-i18n="poll.children.label"></label>
-      <input type="number" name="children" id="children" min="0" max="10"/>
+      <input type="number" name="children" id="children" min="0" max="10" required/>
       
         <label data-i18n="poll.allergies.label"></label>
       <textarea name="allergies" id="allergies"></textarea>
@@ -151,22 +151,6 @@
       <button type="submit" class="button" data-i18n="poll.submit"></button>
     </form>
   </div>
-
-  <!-- HIDDEN GOOGLE FORM -->
-  <form id="rsvpForm"
-        action="https://docs.google.com/forms/d/e/1FAIpQLSe1WF-ZUAfunHP3IJaUVuKduT2EDrk4WKaq_y3cOLYJCDRI1w/formResponse"
-        method="POST"
-        target="hidden_iframe">
-
-    <input type="hidden" name="entry.37844826" id="g_attending">
-    <input type="hidden" name="entry.2093007889" id="g_names">
-    <input type="hidden" name="entry.645515434" id="g_guests">
-    <input type="hidden" name="entry.429903674" id="g_children">
-    <input type="hidden" name="entry.711463186" id="g_allergies">
-    <input type="hidden" name="entry.249259064" id="g_message">
-
-    <button type="submit" id="submitBtn" style="display:none;"></button>
-  </form>
 
   <iframe name="hidden_iframe" style="display:none;"></iframe>
 
@@ -225,7 +209,7 @@
 
     const buttons = document.querySelectorAll(".lang-btn");
     const elements = document.querySelectorAll("[data-i18n]");
-    
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwTqgpRIqZAdZqptS-s6SOKoLBszu3nA6fexO4-ynOxdYYVENMJNPzuNMSKi_eqpy9_Ag/exec";
     const params = new URLSearchParams(window.location.search);
     const drink = document.getElementById("drink");
     const party = document.getElementById("party");
@@ -268,37 +252,48 @@
       if (this.checked) none.checked = false;
     });
     // FORM SUBMISSION
-    document.getElementById("poll-form").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const selected = [];
-      if (document.getElementById("drink").checked) {
-       selected.push("Drink");
-      }
-      if (document.getElementById("party").checked) {
-        selected.push("Party");
-      }
-      if (document.getElementById("none").checked) {
-        selected.push("None");
-      }
-      document.getElementById("g_attending").value = selected.join(";");
-      document.getElementById("g_names").value = document.getElementById("names").value;
-      document.getElementById("g_guests").value = document.getElementById("guests").value;
-      document.getElementById("g_children").value = document.getElementById("children").value;
-      document.getElementById("g_allergies").value = document.getElementById("allergies").value;
-      document.getElementById("g_message").value = document.getElementById("message").value;
+  document.getElementById("poll-form").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const submitButton = document.querySelector("#poll-form button[type='submit']");
+    submitButton.disabled = true;
+    submitButton.innerText = "Sending...";
 
-      document.getElementById("submitBtn").click();
+    const selected = [];
 
-      setTimeout(() => {
+    if (drink.checked) {selected.push("drink");}
+    if (party.checked) {selected.push("party");}
+    if (none.checked)  {selected.push("cannot_attend");}
+
+    try {
+        const response = await fetch(SCRIPT_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                attending: selected.join(","),
+                names: document.getElementById("names").value.trim(),
+                guests: document.getElementById("guests").value,
+                children: document.getElementById("children").value,
+                allergies: document.getElementById("allergies").value.trim(),
+                message: document.getElementById("message").value.trim()
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
         window.location.href = `thankyou.html?lang=${currentLang}`;
-      }, 300);
+    } catch (error) {
+        console.error(error);
+        alert("Something went wrong while sending your RSVP. Please try again.");
+        submitButton.disabled = false;
+        submitButton.innerText = translations[currentLang].poll.submit;
+    }
     });
-
     buttons.forEach(btn => btn.addEventListener("click", () => updateLanguage(btn.dataset.lang)));
-
     updateLanguage(currentLang);
   </script>
-
 </body>
 </html>
 
