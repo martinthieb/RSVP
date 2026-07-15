@@ -280,7 +280,7 @@
 
     document.getElementById("appsScriptForm").submit();
 
-    //setTimeout(() => {window.location.href = `thankyou.html?lang=${currentLang}`;}, 500);
+    setTimeout(() => {window.location.href = `thankyou.html?lang=${currentLang}`;}, 500);
     });
 
 buttons.forEach(btn => btn.addEventListener("click", () => updateLanguage(btn.dataset.lang)));
