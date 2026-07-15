@@ -151,9 +151,22 @@
       <button type="submit" class="button" data-i18n="poll.submit"></button>
     </form>
   </div>
+  <form
+    id="appsScriptForm"
+    action="https://script.google.com/macros/s/AKfycbzS3BhmKWuPj8u7A2NiXxcfYsc_15poof1tL2zFAen6Q4gBaWHxN-6tRBJvy3SOaEgQXA/exec"
+    method="POST"
+    target="hidden_iframe">
 
-  <iframe name="hidden_iframe" style="display:none;"></iframe>
+    <input type="hidden" name="attending" id="as_attending">
+    <input type="hidden" name="names" id="as_names">
+    <input type="hidden" name="guests" id="as_guests">
+    <input type="hidden" name="children" id="as_children">
+    <input type="hidden" name="allergies" id="as_allergies">
+    <input type="hidden" name="message" id="as_message">
 
+</form>
+
+<iframe name="hidden_iframe" style="display:none;"></iframe>
   <script>
     const translations = {
       en: {
@@ -209,7 +222,6 @@
 
     const buttons = document.querySelectorAll(".lang-btn");
     const elements = document.querySelectorAll("[data-i18n]");
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzOrf60iY4LE2VoCS0boacJpknYVB6Y_iXvcf5guZpCu6V3akQ59MsfEkrqr5x_zOHXtg/exec";
     const params = new URLSearchParams(window.location.search);
     const drink = document.getElementById("drink");
     const party = document.getElementById("party");
@@ -252,46 +264,27 @@
       if (this.checked) none.checked = false;
     });
     // FORM SUBMISSION
-  document.getElementById("poll-form").addEventListener("submit", async function (e) {
+    document.getElementById("poll-form").addEventListener("submit", function (e) {
+
     e.preventDefault();
-    const submitButton = document.querySelector("#poll-form button[type='submit']");
-    submitButton.disabled = true;
-    submitButton.innerText = "Sending...";
-
     const selected = [];
+    if (drink.checked) selected.push("drink");
+    if (party.checked) selected.push("party");
+    if (none.checked) selected.push("cannot_attend");
+    document.getElementById("as_attending").value = selected.join(",");
+    document.getElementById("as_names").value = document.getElementById("names").value;
+    document.getElementById("as_guests").value = document.getElementById("guests").value;
+    document.getElementById("as_children").value = document.getElementById("children").value;
+    document.getElementById("as_allergies").value = document.getElementById("allergies").value;
+    document.getElementById("as_message").value = document.getElementById("message").value;
 
-    if (drink.checked) {selected.push("drink");}
-    if (party.checked) {selected.push("party");}
-    if (none.checked)  {selected.push("cannot_attend");}
+    document.getElementById("appsScriptForm").submit();
 
-    try {
-        const formData = new URLSearchParams();
-
-        formData.append("attending", selected.join(","));
-        formData.append("names", document.getElementById("names").value.trim());
-        formData.append("guests", document.getElementById("guests").value);
-        formData.append("children", document.getElementById("children").value);
-        formData.append("allergies", document.getElementById("allergies").value.trim());
-        formData.append("message", document.getElementById("message").value.trim());
-
-const response = await fetch(SCRIPT_URL, {
-    method: "POST",
-    body: formData
-});
-
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
-        }
-        window.location.href = `thankyou.html?lang=${currentLang}`;
-    } catch (error) {
-        console.error(error);
-        alert("Something went wrong while sending your RSVP. Please try again.");
-        submitButton.disabled = false;
-        submitButton.innerText = translations[currentLang].poll.submit;
-    }
+    setTimeout(() => {window.location.href = `thankyou.html?lang=${currentLang}`;}, 500);
     });
-    buttons.forEach(btn => btn.addEventListener("click", () => updateLanguage(btn.dataset.lang)));
-    updateLanguage(currentLang);
+
+buttons.forEach(btn => btn.addEventListener("click", () => updateLanguage(btn.dataset.lang)));
+updateLanguage(currentLang);
   </script>
 </body>
 </html>
