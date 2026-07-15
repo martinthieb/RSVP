@@ -137,7 +137,7 @@
       <input type="text" name="names" id="names" required />
 
       <label data-i18n="poll.guests.label"></label>
-      <input type="number" name="guests" id="guests" min="1" max="10" required/>
+      <input type="number" name="guests" id="guests" min="0" max="10" required/>
       
       <label data-i18n="poll.children.label"></label>
       <input type="number" name="children" id="children" min="0" max="10" required/>
@@ -209,7 +209,7 @@
 
     const buttons = document.querySelectorAll(".lang-btn");
     const elements = document.querySelectorAll("[data-i18n]");
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwTqgpRIqZAdZqptS-s6SOKoLBszu3nA6fexO4-ynOxdYYVENMJNPzuNMSKi_eqpy9_Ag/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzOrf60iY4LE2VoCS0boacJpknYVB6Y_iXvcf5guZpCu6V3akQ59MsfEkrqr5x_zOHXtg/exec";
     const params = new URLSearchParams(window.location.search);
     const drink = document.getElementById("drink");
     const party = document.getElementById("party");
@@ -265,20 +265,19 @@
     if (none.checked)  {selected.push("cannot_attend");}
 
     try {
-        const response = await fetch(SCRIPT_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                attending: selected.join(","),
-                names: document.getElementById("names").value.trim(),
-                guests: document.getElementById("guests").value,
-                children: document.getElementById("children").value,
-                allergies: document.getElementById("allergies").value.trim(),
-                message: document.getElementById("message").value.trim()
-            })
-        });
+        const formData = new URLSearchParams();
+
+        formData.append("attending", selected.join(","));
+        formData.append("names", document.getElementById("names").value.trim());
+        formData.append("guests", document.getElementById("guests").value);
+        formData.append("children", document.getElementById("children").value);
+        formData.append("allergies", document.getElementById("allergies").value.trim());
+        formData.append("message", document.getElementById("message").value.trim());
+
+const response = await fetch(SCRIPT_URL, {
+    method: "POST",
+    body: formData
+});
 
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
