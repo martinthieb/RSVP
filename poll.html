@@ -227,8 +227,10 @@
     const party = document.getElementById("party");
     const none = document.getElementById("none");
     const planning = document.getElementById("planning");
+    const iframe = document.querySelector('iframe[name="hidden_iframe"]');
 
     let currentLang = params.get("lang") || "en";
+    let submissionPending = false;
 
     function setActiveButton(lang) {
       buttons.forEach(b => b.classList.toggle("active", b.dataset.lang === lang));
@@ -263,14 +265,28 @@
     party.addEventListener("change", function () {
       if (this.checked) none.checked = false;
     });
-    // FORM SUBMISSION
-    document.getElementById("poll-form").addEventListener("submit", function (e) {
 
+
+    // Listen for the Apps Script response
+    iframe.onload = function () {
+      // Ignore the iframe's initial load
+      if (!submissionPending) return;
+      submissionPending = false;
+      // Redirect only after Apps Script has responded
+      window.location.href = `thankyou.html?lang=${currentLang}`;
+    };
+    
+    // FORM SUBMISSION
+  document.getElementById("poll-form").addEventListener("submit", function (e) {
     e.preventDefault();
+    // Prevent double-clicks
+    if (submissionPending) return;
+    submissionPending = true;
     const selected = [];
     if (drink.checked) selected.push("drink");
     if (party.checked) selected.push("party");
     if (none.checked) selected.push("cannot_attend");
+
     document.getElementById("as_attending").value = selected.join(",");
     document.getElementById("as_names").value = document.getElementById("names").value;
     document.getElementById("as_guests").value = document.getElementById("guests").value;
@@ -278,9 +294,12 @@
     document.getElementById("as_allergies").value = document.getElementById("allergies").value;
     document.getElementById("as_message").value = document.getElementById("message").value;
 
-    document.getElementById("appsScriptForm").submit();
+    // Optional: disable the submit button while sending
+    const submitButton = this.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
 
-    setTimeout(() => {window.location.href = `thankyou.html?lang=${currentLang}`;}, 500);
+    // Submit to Apps Script
+    document.getElementById("appsScriptForm").submit();
     });
 
 buttons.forEach(btn => btn.addEventListener("click", () => updateLanguage(btn.dataset.lang)));
